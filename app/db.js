@@ -3,7 +3,9 @@
 import nconf from './config';
 import mysql from 'mysql';
 
-let pool = mysql.createPool(nconf.get('mysql'));
+if (nconf.get('mysql')) {
+    let pool = mysql.createPool(nconf.get('mysql'))
+}
 
 export function dq(query, params) {
 
