@@ -1,14 +1,17 @@
 {
-    "name": "fotofolder",
+    "name": "media-folder",
     "version": "1.0.0",
     "description": "a simple foto folder",
+    "repository": {
+        "url": "https://github.com/lgooday/media-folder"
+    },
     "main": "main.js",
     "scripts": {
         "start": "babel-watch app/main.js",
         "build": "babel -d ./build ./app",
         "test": "mocha --require babel-register tests/**/**.spec.js --watch --reporter min"
     },
-    "author": "",
+    "author": "lgooday",
     "license": "ISC",
     "dependencies": {
         "async": "^2.6.0",
