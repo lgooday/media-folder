@@ -9,7 +9,8 @@
     "scripts": {
         "start": "babel-watch app/main.js",
         "build": "babel -d ./build ./app",
-        "test": "mocha --require babel-register tests/**/**.spec.js --watch --reporter min"
+        "test": "mocha --require babel-register tests/**/**.spec.js",
+        "test:w": "mocha --require babel-register tests/**/**.spec.js --watch --reporter min"
     },
     "author": "lgooday",
     "license": "ISC",
