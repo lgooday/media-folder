@@ -11,6 +11,7 @@ import dump from './dump'
 import assert from 'assert'
 import commandLineArgs from 'command-line-args'
 
+
 let globAsync = Promise.promisify(glob)
 
 const cla = commandLineArgs([

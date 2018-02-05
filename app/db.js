@@ -7,7 +7,7 @@ if (nconf.get('mysql')) {
     let pool = mysql.createPool(nconf.get('mysql'))
 }
 
-export function dq(query, params) {
+export function dq(query, params, tag) {
 
     return new Promise((res, rej) => {
 
@@ -29,10 +29,10 @@ export function dq(query, params) {
     });
 }
 
-export function dqf(query, params) {
+export function dqf(query, params, tag) {
 
     return new Promise((res, rej) => {
-        return dq(query, params)
+        return dq(query, params, tag)
             .then(
                 (rows) => {
                     if (rows && rows.length === 1) {
@@ -45,7 +45,6 @@ export function dqf(query, params) {
             );
     });
 }
-
 
 export function dbclose() {
     pool.end(function(err) {

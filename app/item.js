@@ -3,11 +3,12 @@ import exif from 'exif'
 import path from 'path'
 import fs from 'fs-extra'
 import moment from 'moment'
-import { dq, dqf } from './db'
+import { dq, dqf, test } from './db'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import nconf from './config'
 import { exifAllowedType, mediaTypes, months } from './constant'
+import { ENETRESET } from 'constants';
 
 export default class Item {
 
@@ -28,27 +29,31 @@ export default class Item {
         return Promise.resolve()
     }
 
+    thrw() {
+        throw new Error('err')
+    }
+
     process() {
         return this.init()
             .then(() => { return this.checkIfExistsInDb() })
             .then(() => { return this.prepare() })
             .then(() => { return this.copyToDest() })
-            .then(() => { return this.moveToBackup() })
             .then(() => { return this.insertInDb() })
+            .then(() => { return this.moveToBackup() })
             .then(() => {
                 return new Promise(res => setTimeout(res, 0))
             })
     }
 
     checkIfExistsInDb() {
-        return dqf('SELECT COUNT(hash) AS alreadyExists FROM item WHERE hash = ?', [this.hash])
+        return dqf('SELECT COUNT(hash) AS alreadyExists FROM item WHERE hash = ?', [this.hash], 'checkIfExistsInDb')
             .then(
                 (row) => { this.alreadyExists = row.alreadyExists !== 0 }
             )
     }
 
     insertInDb() {
-        return dq('INSERT IGNORE INTO item SET ?', this.toDb())
+        return dq('INSERT IGNORE INTO item SET ?', this.toDb(), 'insertInDb')
     }
 
     prepare() {
@@ -90,15 +95,9 @@ export default class Item {
             )
             .then(() => {
 
-                this.absOutputPath = path.join(
-                    nconf.get('dir').output,
-                    this.lastModif.format('YYYY'),
-                    this.lastModif.format('MM') + ' - ' + months[this.lastModif.format('M')]
-                )
-
-                this.absBackupPath = path.join(
-                    nconf.get('dir').backup,
-                    _.drop(this.src.split('/')).join("/")
+                this.outputPath = path.join(this.lastModif.format('YYYY'),
+                    this.lastModif.format('MM') +
+                    ' - ' + months[this.lastModif.format('M')]
                 )
 
                 this.outputFilename =
@@ -106,6 +105,11 @@ export default class Item {
                     '__' +
                     this.hash.substring(0, 6) +
                     this.ext.toLowerCase()
+
+                this.absBackupPath = path.join(
+                    nconf.get('dir').backup,
+                    _.drop(this.src.split('/')).join("/")
+                )
 
             })
     }
@@ -117,7 +121,7 @@ export default class Item {
 
             if (filename.length === 15) {
 
-                let dt = moment(filename, 'YYYYMMDD HHmmss', true);
+                let dt = moment(filename, 'YYYYMMDD_HHmmss', true);
 
                 if (dt.isValid()) res({ verdict: true, dt })
                 else res({ verdict: false, reason: 'invalid' })
@@ -216,7 +220,7 @@ export default class Item {
         if (this.alreadyExists) {
             return Promise.resolve();
         } else {
-            return fs.copy(this.src, path.join(this.absOutputPath, this.outputFilename))
+            return fs.copy(this.src, path.join(nconf.get('dir').output, this.outputPath, this.outputFilename))
         }
     }
 
