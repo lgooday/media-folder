@@ -1,6 +1,7 @@
 import md5File from 'md5-file'
 import exif from 'exif'
 import path from 'path'
+import pathjoin from 'path.join'
 import fs from 'fs-extra'
 import moment from 'moment'
 import { dq, dqf, test } from './db'
@@ -8,7 +9,6 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import nconf from './config'
 import { exifAllowedType, mediaTypes, months } from './constant'
-import { ENETRESET } from 'constants';
 
 export default class Item {
 
@@ -95,7 +95,7 @@ export default class Item {
             )
             .then(() => {
 
-                this.outputPath = path.join(this.lastModif.format('YYYY'),
+                this.outputPath = pathjoin(this.lastModif.format('YYYY'),
                     this.lastModif.format('MM') +
                     ' - ' + months[this.lastModif.format('M')]
                 )
@@ -106,9 +106,9 @@ export default class Item {
                     this.hash.substring(0, 6) +
                     this.ext.toLowerCase()
 
-                this.absBackupPath = path.join(
+                this.absBackupPath = pathjoin(
                     nconf.get('dir').backup,
-                    _.drop(this.src.split('/')).join("/")
+                    moment.utc().format('YYYYMMDD')
                 )
 
             })
@@ -128,7 +128,7 @@ export default class Item {
 
             } else res({ verdict: false, reason: 'len' })
 
-        });
+        })
     }
 
     tryFs() {
@@ -153,7 +153,7 @@ export default class Item {
                 rej({ type: 'tryFs', err })
             }
 
-        });
+        })
 
     }
 
@@ -220,12 +220,12 @@ export default class Item {
         if (this.alreadyExists) {
             return Promise.resolve();
         } else {
-            return fs.copy(this.src, path.join(nconf.get('dir').output, this.outputPath, this.outputFilename))
+            return fs.copy(this.src, pathjoin(nconf.get('dir').output, this.outputPath, this.outputFilename))
         }
     }
 
     moveToBackup() {
-        return fs.move(this.src, this.absBackupPath, { clobber: true })
+        return fs.move(this.src, this.absBackupPath, { overwrite: true })
     }
 
 }

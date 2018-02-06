@@ -27,7 +27,8 @@
         "md5-file": "^3.2.3",
         "moment": "^2.13.0",
         "mysql": "^2.15.0",
-        "nconf": "^0.10.0"
+        "nconf": "^0.10.0",
+        "path.join": "^1.0.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

@@ -3,8 +3,9 @@ import Item from '../app/item'
 import nconf from '../app/config'
 import { expect } from 'chai'
 import sinon from 'sinon'
-import path from 'path'
+import pathjoin from 'path.join'
 import * as db from '../app/db'
+import moment from 'moment'
 
 import "babel-polyfill"
 
@@ -31,11 +32,11 @@ describe('processing files in ./resources', () => {
             .resolves({ alreadyExists: 0 })
 
         copyMock = sinon.mock(fs).expects('copy')
-            .withArgs(src, path.join(nconf.get('dir').output, exp.outputPath, exp.outputFilename))
+            .withArgs(src, pathjoin(nconf.get('dir').output, exp.outputPath, exp.outputFilename))
             .once()
 
         moveMock = sinon.mock(fs).expects('move')
-            .withArgs(src, path.join(nconf.get('dir').backup))
+            .withArgs(src, pathjoin(nconf.get('dir').backup, moment.utc().format('YYYYMMDD')))
             .once()
     })
 
@@ -47,10 +48,10 @@ describe('processing files in ./resources', () => {
     })
 
     before(() => {
-        src = path.join(__dirname, '/resources/raw.jpg')
+        src = pathjoin(__dirname, '/resources/raw.jpg')
         exp = {
             outputFilename: '2018-02-02_15h10__70c753.jpg',
-            outputPath: '2018\\02 - fevrier',
+            outputPath: '2018/02 - fevrier',
             hash: '70c7532c0edb28f8b063ed0ba61a3de1',
             mediaType: 'photo',
             lastModifFrom: 'fs'
@@ -63,10 +64,10 @@ describe('processing files in ./resources', () => {
     })
 
     before(() => {
-        src = path.join(__dirname, '/resources/20170213_140832.jpg')
+        src = pathjoin(__dirname, '/resources/20170213_140832.jpg')
         exp = {
             outputFilename: '2017-02-13_14h08__70c753.jpg',
-            outputPath: '2017\\02 - fevrier',
+            outputPath: '2017/02 - fevrier',
             hash: '70c7532c0edb28f8b063ed0ba61a3de1',
             mediaType: 'photo',
             lastModifFrom: 'filename'
