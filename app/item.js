@@ -18,7 +18,7 @@ export default class Item {
 
     init() {
         try {
-            this.ext = path.extname(this.src)
+            this.ext = path.extname(this.src).toLowerCase()
             this.baseName = path.basename(this.src)
             this.dirName = path.dirname(this.src)
             this.hash = md5File.sync(this.src)
@@ -57,28 +57,26 @@ export default class Item {
     }
 
     prepare() {
-
         return Promise
             .all([this.tryFs(), this.tryExif(), this.tryFilename()])
             .then(
                 (pRes) => {
 
                     if (pRes[1] && pRes[1].verdict)
-                        this.exif = pRes[1].exif;
+                        this.exif = pRes[1].exif
 
                     if (pRes[2] && pRes[2].verdict) {
-                        this.lastModif = pRes[2].dt;
-                        this.lastModifFrom = 'filename';
+                        this.lastModif = pRes[2].dt
+                        this.lastModifFrom = 'filename'
                     }
 
                     if (!this.lastModif &&
                         pRes[1] &&
                         pRes[1].verdict &&
-                        pRes[1].exif &&
-                        pRes[1].exif.DateTimeOriginal) {
+                        pRes[1].exif && pRes[1].exif.exif &&
+                        pRes[1].exif.exif.DateTimeOriginal) {
 
-                        //2015:09:09 14:39:50'
-                        let dt = moment(pRes[1].exif.DateTimeOriginal, 'YYYY:MM:DD HH:mm:ss');
+                        let dt = moment(pRes[1].exif.exif.DateTimeOriginal, 'YYYY:MM:DD HH:mm:ss');
 
                         if (dt.isValid()) {
                             this.lastModif = dt;
@@ -111,6 +109,7 @@ export default class Item {
                     moment.utc().format('YYYYMMDD')
                 )
 
+                // console.log(this)
             })
     }
 

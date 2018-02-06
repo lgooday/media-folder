@@ -99,5 +99,13 @@ function processFile(file) {
 }
 
 function getFilesInFolder() {
-    return globAsync(`${nconf.get('dir').input}/**/*.{JPG,jpg,jpeg,mp4,3gp,MPG,AVI,MOV}`, { ignore: '**/*/@eaDir/**/*' })
+
+    let p = nconf.get('dir').input
+    let exts = "/**/*."
+
+    exts += 'JPG,jpg,jpeg,mp4,3gp,MPG,AVI,MOV'
+
+    exts += '}'
+
+    return globAsync(`${p}${exts}`, { ignore: '**/*/@eaDir/**/*' })
 }
