@@ -118,7 +118,7 @@ describe('processing files in ./resources', () => {
         })
     })
 
-    describe.only('small.mp4', () => {
+    describe('small.mp4', () => {
         before(() => {
             src = pathjoin(__dirname, '/resources/small.mp4')
             exp = {
