@@ -46,7 +46,7 @@ describe('processing files in ./resources', () => {
         db.dqf.restore()
     })
 
-    describe('raw.jpg', () => {
+    xdescribe('raw.jpg', () => {
         before(() => {
             src = pathjoin(__dirname, '/resources/raw.jpg')
             exp = {
@@ -82,15 +82,15 @@ describe('processing files in ./resources', () => {
         })
     })
 
-    describe('ucaseExt.JPG', () => {
+    describe('20210102_133758.JPG', () => {
         before(() => {
-            src = pathjoin(__dirname, '/resources/ucaseExt.JPG')
+            src = pathjoin(__dirname, '/resources/20210102_133758.JPG')
             exp = {
-                outputFilename: '2018-02-02_15h18__37dd8e.jpg',
-                outputPath: '2018/02 - fevrier',
+                outputFilename: '2021-01-02_13h37__37dd8e.jpg',
+                outputPath: '2021/01 - janvier',
                 hash: '37dd8e1415bf2999069c10210e068fe1',
                 mediaType: 'photo',
-                lastModifFrom: 'fs'
+                lastModifFrom: 'filename'
             }
         })
         it('should process', async() => {
@@ -118,7 +118,7 @@ describe('processing files in ./resources', () => {
         })
     })
 
-    describe('small.mp4', () => {
+    xdescribe('small.mp4', () => {
         before(() => {
             src = pathjoin(__dirname, '/resources/small.mp4')
             exp = {

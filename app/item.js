@@ -116,11 +116,11 @@ export default class Item {
     tryFilename() {
         return new Promise((res) => {
 
-            let filename = this.baseName.replace(this.ext, '');
+            let filename = this.baseName.toLocaleLowerCase().replace(this.ext, '')
 
             if (filename.length === 15) {
 
-                let dt = moment(filename, 'YYYYMMDD_HHmmss', true);
+                let dt = moment(filename, 'YYYYMMDD_HHmmss', true)
 
                 if (dt.isValid()) res({ verdict: true, dt })
                 else res({ verdict: false, reason: 'invalid' })
@@ -137,11 +137,11 @@ export default class Item {
             try {
                 fs.stat(this.src, (err, stats) => {
 
-                    if (err) rej({ type: 'tryFs', err });
+                    if (err) rej({ type: 'tryFs', err })
 
-                    this.fileSize = stats.size;
+                    this.fileSize = stats.size
 
-                    let m = moment(stats.mtime);
+                    let m = moment(stats.mtime)
 
                     if (m.isValid()) res(m)
                     else rej({ type: 'tryFs', err: stats.mtime })
