@@ -106,7 +106,7 @@ function batch(date, batchNumber) {
 
 }
 
-export default function(date) {
+export function dump(date) {
     return new Promise((res, rej) => {
 
         let targetDate = date || moment.utc();

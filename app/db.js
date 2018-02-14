@@ -46,7 +46,7 @@ export function dqf(query, params, tag) {
     });
 }
 
-export function dbclose() {
+export function close() {
     pool.end(function(err) {
         if (err) {
             console.error(err)

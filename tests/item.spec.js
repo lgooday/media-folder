@@ -48,7 +48,7 @@ describe('processing files in ./resources', () => {
 
     xdescribe('raw.jpg', () => {
         before(() => {
-            src = pathjoin(__dirname, '/resources/raw.jpg')
+            src = pathjoin(nconf.get('dir').input, '/raw.jpg')
             exp = {
                 outputFilename: '2018-02-02_15h10__70c753.jpg',
                 outputPath: '2018/02 - fevrier',
@@ -66,7 +66,7 @@ describe('processing files in ./resources', () => {
 
     describe('20170213_140832.jpg', () => {
         before(() => {
-            src = pathjoin(__dirname, '/resources/20170213_140832.jpg')
+            src = pathjoin(nconf.get('dir').input, '20170213_140832.jpg')
             exp = {
                 outputFilename: '2017-02-13_14h08__70c753.jpg',
                 outputPath: '2017/02 - fevrier',
@@ -84,7 +84,7 @@ describe('processing files in ./resources', () => {
 
     describe('20210102_133758.JPG', () => {
         before(() => {
-            src = pathjoin(__dirname, '/resources/20210102_133758.JPG')
+            src = pathjoin(nconf.get('dir').input, '20210102_133758.JPG')
             exp = {
                 outputFilename: '2021-01-02_13h37__37dd8e.jpg',
                 outputPath: '2021/01 - janvier',
@@ -102,7 +102,7 @@ describe('processing files in ./resources', () => {
 
     describe('20140901_111132(0).jpg', () => {
         before(() => {
-            src = pathjoin(__dirname, '/resources/20140901_111132(0).jpg')
+            src = pathjoin(nconf.get('dir').input, '20140901_111132(0).jpg')
             exp = {
                 outputFilename: '2014-09-01_11h11__70c753.jpg',
                 outputPath: '2014/09 - septembre',
@@ -120,7 +120,7 @@ describe('processing files in ./resources', () => {
 
     describe('exif.jpg', () => {
         before(() => {
-            src = pathjoin(__dirname, '/resources/exif.jpg')
+            src = pathjoin(nconf.get('dir').input, 'exif.jpg')
             exp = {
                 outputFilename: '2018-02-25_14h23__0506ca.jpg',
                 outputPath: '2018/02 - fevrier',
@@ -138,7 +138,7 @@ describe('processing files in ./resources', () => {
 
     xdescribe('small.mp4', () => {
         before(() => {
-            src = pathjoin(__dirname, '/resources/small.mp4')
+            src = pathjoin(nconf.get('dir').input, 'small.mp4')
             exp = {
                 outputFilename: '2018-02-06_15h29__a3ac7d.mp4',
                 outputPath: '2018/02 - fevrier',

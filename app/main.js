@@ -1,18 +1,13 @@
-import Item from './item'
 import nconf from './config'
-import glob from 'glob'
 import _ from 'lodash'
-import Promise from 'bluebird'
 import console from 'better-console'
 import async from 'async'
 import moment from 'moment'
-import { dbclose } from './db'
-import dump from './dump'
+import * as db from './db'
+import * as dumper from './dump'
 import assert from 'assert'
 import commandLineArgs from 'command-line-args'
-
-
-let globAsync = Promise.promisify(glob)
+import * as folder from './fold'
 
 const cla = commandLineArgs([
     { name: 'dump', type: String }
@@ -57,55 +52,11 @@ function main() {
         }
 
     } else {
-        getFilesInFolder()
-            .then(processFiles)
-            .then(dump)
-            .then(dbclose)
+        folder.getFilesInFolder()
+            .then(folder.processFiles)
+            .then(dumper.dump)
+            .then(db.close)
             .then(() => console.log('finished.'))
             .catch(console.error)
     }
-}
-
-function processFiles(files) {
-    if (files && files.length) {
-        return new Promise((res, rej) => {
-
-            let count = 0;
-            console.info(`processing ${files.length} files.`)
-
-            var q = async.queue((file, next) => {
-                //console.log(`processing "${file}"`)
-                processFile(file)
-                    .then(() => {
-                        console.log(`${++count}/${files.length} ok.`)
-                        next()
-                    })
-                    .catch(rej)
-            }, nconf.get('batch').concurrency);
-
-            q.drain = res;
-
-            _.each(files, (file) => q.push(file))
-
-        })
-    } else {
-        console.log('no media here.')
-        return Promise.resolve()
-    }
-}
-
-function processFile(file) {
-    return new Item(file).process()
-}
-
-function getFilesInFolder() {
-
-    let p = nconf.get('dir').input
-    let exts = "/**/*."
-
-    exts += 'JPG,jpg,jpeg,mp4,3gp,MPG,AVI,MOV'
-
-    exts += '}'
-
-    return globAsync(`${p}${exts}`, { ignore: '**/*/@eaDir/**/*' })
 }
