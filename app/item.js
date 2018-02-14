@@ -8,7 +8,7 @@ import { dq, dqf, test } from './db'
 import _ from 'lodash'
 import Promise from 'bluebird'
 import nconf from './config'
-import { exifAllowedType, mediaTypes, months } from './constant'
+import { exifAllowedType, mediaTypes, months, pollutingFilenamesString } from './constant'
 
 export default class Item {
 
@@ -76,7 +76,7 @@ export default class Item {
                         pRes[1].exif && pRes[1].exif.exif &&
                         pRes[1].exif.exif.DateTimeOriginal) {
 
-                        let dt = moment(pRes[1].exif.exif.DateTimeOriginal, 'YYYY:MM:DD HH:mm:ss');
+                        let dt = moment(pRes[1].exif.exif.DateTimeOriginal, 'YYYY:MM:DD HH:mm:ss', true);
 
                         if (dt.isValid()) {
                             this.lastModif = dt;
@@ -116,11 +116,18 @@ export default class Item {
     tryFilename() {
         return new Promise((res) => {
 
-            let filename = this.baseName.toLocaleLowerCase().replace(this.ext, '')
+            let filename = this
+                .baseName
+                .toLocaleLowerCase()
+                .replace(this.ext, '')
+
+            _.each(pollutingFilenamesString, (pollute) => {
+                filename = filename.replace(pollute, '')
+            })
 
             if (filename.length === 15) {
 
-                let dt = moment(filename, 'YYYYMMDD_HHmmss', true)
+                let dt = moment(filename, 'YYYYMMDD_HHmmss')
 
                 if (dt.isValid()) res({ verdict: true, dt })
                 else res({ verdict: false, reason: 'invalid' })

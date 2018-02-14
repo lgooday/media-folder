@@ -100,6 +100,24 @@ describe('processing files in ./resources', () => {
         })
     })
 
+    describe('20140901_111132(0).jpg', () => {
+        before(() => {
+            src = pathjoin(__dirname, '/resources/20140901_111132(0).jpg')
+            exp = {
+                outputFilename: '2014-09-01_11h11__70c753.jpg',
+                outputPath: '2014/09 - septembre',
+                hash: '70c7532c0edb28f8b063ed0ba61a3de1',
+                mediaType: 'photo',
+                lastModifFrom: 'filename'
+            }
+        })
+        it('should process', async() => {
+            let item = new Item(src)
+            await item.process()
+            verify(item, exp)
+        })
+    })
+
     describe('exif.jpg', () => {
         before(() => {
             src = pathjoin(__dirname, '/resources/exif.jpg')
