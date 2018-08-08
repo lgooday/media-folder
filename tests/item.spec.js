@@ -59,7 +59,7 @@ describe('processing files in ./resources', () => {
 			.once()
 
 		moveMock = sinon.mock(fs).expects('move')
-			.withArgs(src, pathjoin(nconf.get('dir').backup, moment.utc().format('YYYYMMDD')))
+			.withArgs(src, pathjoin(nconf.get('dir').backup, moment.utc().format('YYYYMMDD'), exp.filename))
 			.once()
 	})
 
@@ -70,7 +70,7 @@ describe('processing files in ./resources', () => {
 		db.queryOne.restore()
 	})
 
-	xdescribe('raw.jpg', () => {
+	describe('raw.jpg', () => {
 		before(() => {
 			src = pathjoin(nconf.get('dir').input, '/raw.jpg')
 			exp = {
@@ -78,7 +78,8 @@ describe('processing files in ./resources', () => {
 				outputPath: '2018/02 - fevrier',
 				hash: '70c7532c0edb28f8b063ed0ba61a3de1',
 				mediaType: 'photo',
-				lastModifFrom: 'fs'
+				lastModifFrom: 'fs',
+				filename: 'raw.jpg'
 			}
 		})
 		it('should process', async () => {
@@ -96,7 +97,8 @@ describe('processing files in ./resources', () => {
 				outputPath: '2017/02 - fevrier',
 				hash: '70c7532c0edb28f8b063ed0ba61a3de1',
 				mediaType: 'photo',
-				lastModifFrom: 'filename'
+				lastModifFrom: 'filename',
+				filename: '20170213_140832.jpg'
 			}
 		})
 		it('should process', async () => {
@@ -114,7 +116,8 @@ describe('processing files in ./resources', () => {
 				outputPath: '2021/01 - janvier',
 				hash: '37dd8e1415bf2999069c10210e068fe1',
 				mediaType: 'photo',
-				lastModifFrom: 'filename'
+				lastModifFrom: 'filename',
+				filename: '20210102_133758.JPG'
 			}
 		})
 		it('should process', async () => {
@@ -132,7 +135,8 @@ describe('processing files in ./resources', () => {
 				outputPath: '2014/09 - septembre',
 				hash: '70c7532c0edb28f8b063ed0ba61a3de1',
 				mediaType: 'photo',
-				lastModifFrom: 'filename'
+				lastModifFrom: 'filename',
+				filename: '20140901_111132(0).jpg'
 			}
 		})
 		it('should process', async () => {
@@ -150,7 +154,8 @@ describe('processing files in ./resources', () => {
 				outputPath: '2018/02 - fevrier',
 				hash: '0506ca4c0cdb4409db254955492e1d08',
 				mediaType: 'photo',
-				lastModifFrom: 'exif'
+				lastModifFrom: 'exif',
+				filename: 'exif.jpg'
 			}
 		})
 		it('should process', async () => {
@@ -160,7 +165,7 @@ describe('processing files in ./resources', () => {
 		})
 	})
 
-	xdescribe('small.mp4', () => {
+	describe('small.mp4', () => {
 		before(() => {
 			src = pathjoin(nconf.get('dir').input, 'small.mp4')
 			exp = {
@@ -168,7 +173,8 @@ describe('processing files in ./resources', () => {
 				outputPath: '2018/02 - fevrier',
 				hash: 'a3ac7ddabb263c2d00b73e8177d15c8d',
 				mediaType: 'video',
-				lastModifFrom: 'fs'
+				lastModifFrom: 'fs',
+				filename: 'small.mp4'
 			}
 		})
 		it('should process', async () => {
