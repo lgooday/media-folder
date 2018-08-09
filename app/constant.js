@@ -1,7 +1,7 @@
 export const exifAllowedType = ['.jpeg', '.jpg']
 
 export const mediaTypes = {
-	video: ['.mp4', '.mpeg4'],
+	video: ['.mp4', '.mpeg4', '.3gp', '.mov'],
 	photo: ['.jpeg', '.jpg']
 }
 
