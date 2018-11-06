@@ -20,7 +20,7 @@
         "async": "^2.6.0",
         "babel-polyfill": "^6.26.0",
         "better-console": "^1.0.1",
-        "bluebird": "^3.5.0",
+        "bluebird": "^3.5.3",
         "command-line-args": "^5.0.1",
         "exif": "^0.6.0",
         "fs-extra": "^7.0.0",
