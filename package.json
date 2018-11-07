@@ -23,7 +23,7 @@
         "bluebird": "^3.5.0",
         "command-line-args": "^5.0.1",
         "exif": "^0.6.0",
-        "fs-extra": "^7.0.0",
+        "fs-extra": "^7.0.1",
         "glob": "^7.0.3",
         "lodash": "^4.17.4",
         "md5-file": "^4.0.0",
