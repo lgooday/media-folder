@@ -30,7 +30,7 @@
         "moment": "^2.13.0",
         "mysql": "^2.15.0",
         "nconf": "^0.10.0",
-        "oz-mysql": "^0.4.1",
+        "oz-mysql": "^0.5.0",
         "path.join": "^1.0.0"
     },
     "devDependencies": {
